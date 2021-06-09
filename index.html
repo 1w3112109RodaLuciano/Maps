@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- HERE JavaScript Libs & Style Sheets-->
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <!-- HERE JavaScript Libs & Style Sheets end-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>HERE Map with Custom Marker</title>
+</head>
+
+<body class="bg-light">
+    <!--In the div HERE Map will be rendered-->
+
+    <div class="container jumbotron my-5 bg-dark bg-gradient text-light">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center">Trabajo Práctico API</h3>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="text-center">Roda</h3>
+            </div>
+            <div class="col-12">
+                <h3 class="text-center">Luciano Elias</h3>
+            </div>
+            <div class="col-12">
+                <h3 class="text-center">112109</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-12">
+                <div style="width: 56vw;height: 50vh;" id="mapContainer"></div>
+            </div>
+
+            <div class="col-2"></div>
+        </div>
+
+
+        <div class="row my-3">
+            <div class="col-2"></div>
+            <div class="col-12 col-md-8">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center my-3">
+                            <h5>Seleccione su marcador favorito:</h5>
+                        </div>
+                    </div>
+                    <div class="row justify-content-around">
+                        <div class="col-3 col-md-2">
+                            <label class="iconos">
+                                <img class="imagenIcono"
+                                    src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-location-256.png"
+                                    style="width: 3em">
+                                <input class="selectorIcono" type="radio" name="icono" value="small1" checked>
+                            </label>
+                        </div>
+                        <div class="col-3 col-md-2">
+                            <label class="iconos">
+                                <img class="imagenIcono"
+                                    src="https://cdn2.iconfinder.com/data/icons/social-media-and-payment/64/-47-256.png"
+                                    style="width: 3em">
+                                <input class="selectorIcono" type="radio" name="icono" value="small">
+                            </label>
+                        </div>
+                        <div class="col-3 col-md-2">
+                            <label class="iconos">
+                                <img class="imagenIcono"
+                                    src="https://cdn4.iconfinder.com/data/icons/twitter-29/512/157_Twitter_Location_Map-256.png"
+                                    style="width: 3em">
+                                <input class="selectorIcono" type="radio" name="icono" value="small">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+
+
+
+        <div class="row my-5">
+            <div class="col-2"></div>
+            <div class="col-12 col-md-8">
+                <div class="container jumbotron bg-primary">
+                    <div id="carouselExampleControls" class="carousel slide" data-interval="false" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <h5 class="text-center">Crea un marcador recibiendo los datos desde una API</h5>
+                                    </div>  
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="row mt-3">
+                                        <div class="col-3">
+                                            <button id="btnCargar" class="btn btn-success">
+                                                Cargar Ubicación desde API
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <h5 class="text-center">Crea un marcador con la ubicación predeterminada <br> UTN-FRC (CBA)</h5>
+                                    </div>  
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="row my-4">
+                                        <div class="col-3">
+                                            <button id="btnCargarPredeterminado" class="btn btn-secondary">
+                                                Cargar Ubicación Predeterminada
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <h5 class="text-center">Crea un marcador personalizado <br> con los datos ingresados</h5>
+                                    </div>  
+                                </div>
+                                <div class="row my-4 justify-content-center">
+                                    <div class="col-auto">
+                                        <label for="inputLatitud" class="visually-hidden">Latitud</label>
+                                        <input type="number" class="form-control" id="inputLatitud"
+                                            placeholder="--.----">
+                                    </div>
+                                    <div class="col-auto">
+                                        <label for="inputLongitud" class="visually-hidden">Longitud</label>
+                                        <input type="number" class="form-control" id="inputLongitud"
+                                            placeholder="--.----">
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="row mt-3">
+                                        <div class="col-3">
+                                            <button id="btnCargarPersonalizado" class="btn btn-info">
+                                                Cargar Ubicación Personalizada
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+
+
+        <!--
+        <div class="row my-3">
+            <div class="col-3">
+                <button id="btnCargar" class="btn btn-success">
+                    Cargar Ubicación desde API
+                </button>
+            </div>
+        </div>
+
+        <div class="row my-4">
+            <div class="col-3">
+                <button id="btnCargarPredeterminado" class="btn btn-secondary">
+                    Cargar Ubicación Predeterminada
+                </button>
+            </div>
+        </div>
+
+
+
+        <form class="row my-4">
+            <div class="col-auto">
+                <label for="inputLatitud" class="visually-hidden">Latitud</label>
+                <input type="number" class="form-control" id="inputLatitud" placeholder="--.----">
+            </div>
+            <div class="col-auto">
+                <label for="inputLongitud" class="visually-hidden">Longitud</label>
+                <input type="number" class="form-control" id="inputLongitud" placeholder="--.----">
+            </div>
+        </form>
+
+
+        <div class="row mt-4">
+            <div class="col-3 my-3">
+                <button id="btnCargarPersonalizado" class="btn btn-primary">
+                    Cargar Ubicación Personalizada
+                </button>
+            </div>
+        </div>
+        -->
+
+
+
+
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+
+            var fuenteIcono = "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-location-256.png";
+
+            $("#btnCargar").click(function () {
+                $.ajax({
+                    url: "https://nhorenstein.com/Coordenada/GetConPunto",
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json",
+                    success: function (result) {
+                        if (result.ok) {
+                            var latitud = result.return.latitud;
+                            var longitud = result.return.longitud;
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: '¡API Cargada correctamente!',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            mostrarMapa(latitud, longitud, fuenteIcono);
+                        }
+                        else {
+                            var latitud = -31.442569;
+                            var longitud = -64.193168;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'No se pudo cargar la ubicación',
+                                text: result.error,
+                            })
+                            mostrarMapa(latitud, longitud, fuenteIcono);
+                        }
+                    },
+                    error: function (error) {
+                        var latitud = -31.442569;
+                        var longitud = -64.193168;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'No se ha podido conectar con el servidor'
+                        })
+                        mostrarMapa(latitud, longitud, fuenteIcono);
+                    }
+                })
+            });
+
+
+
+
+            $("#btnCargarPredeterminado").click(function () {
+                mostrarMapa(-31.442569, -64.193168, fuenteIcono);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '¡Posición Cargada correctamente!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+
+
+            $("#btnCargarPersonalizado").click(function () {
+                let latitud = $("#inputLatitud").val();
+                let longitud = $("#inputLongitud").val();
+
+                if ($("#inputLatitud").val() == "") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Debe Ingresar la Latitud',
+                        text: ''
+                    })
+                    return false;
+                }
+
+                if ($("#inputLongitud").val() == "") {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Debe Ingresar la Longitud',
+                        text: ''
+                    })
+                    return false;
+                }
+
+                mostrarMapa(latitud, longitud, fuenteIcono);
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '¡Posición Personalizada Cargada correctamente!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+
+
+
+            $(".selectorIcono").click(function () {
+                fuenteIcono = $(this).prev().attr('src');
+            });
+
+            function mostrarMapa(latt, longg, icono) {
+                $("#mapContainer").empty();
+
+                //Step 1: initialize communication with the platform
+                // Replace variable YOUR_API_KEY with your own apikey
+                var platform = new H.service.Platform({
+                    apikey: '405JwiNZJmk6eBA8EFPEv52A-IAs8SM7ReCm2BH5U8k'
+                });
+                var defaultLayers = platform.createDefaultLayers();
+                //Step 2: initialize a map - this map is centered over Europe
+                var map = new H.Map(document.getElementById('mapContainer'),
+                    defaultLayers.vector.normal.map,
+                    {
+                        center: { lat: 50, lng: 5 },
+                        zoom: 4,
+                        pixelRatio: window.devicePixelRatio || 1
+                    }
+                );
+                // add a resize listener to make sure that the map occupies the whole container
+
+                window.addEventListener('resize', () => map.getViewPort().resize());
+
+
+                //Step 3: make the map interactive
+                // MapEvents enables the event system
+                // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+                var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+
+                // Create the default UI components
+                var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+                // Marker code goes here
+                var LocationOfMarker = { lat: latt, lng: longg };
+
+                // optionally - resize a larger PNG image to a specific size
+                var pngIcon = new H.map.Icon(icono, { size: { w: 56, h: 56 } });
+
+                // Create a marker using the previously instantiated icon:
+                var marker = new H.map.Marker(LocationOfMarker, { icon: pngIcon });
+
+                // Add the marker to the map:
+                map.addObject(marker);
+
+                // Optionally, 
+                //Show the marker in the center of the map
+                map.setCenter(LocationOfMarker)
+
+                //Zooming so that the marker can be clearly visible
+                map.setZoom(8)
+            }
+        </script>
+</body>
+
+</html>

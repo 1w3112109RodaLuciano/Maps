@@ -22,7 +22,8 @@
 <body class="bg-light">
     <!--In the div HERE Map will be rendered-->
 
-    <div class="container jumbotron my-5 bg-secondary bg-gradient text-light" style="background-image: var(--bs-gradient)">
+    <div class="container jumbotron my-5 bg-secondary bg-gradient text-light"
+        style="background-image: var(--bs-gradient)">
         <div class="row">
             <div class="col-12">
                 <h3 class="text-center">Trabajo Práctico API</h3>
@@ -103,7 +104,7 @@
                                 <div class="row justify-content-center">
                                     <div class="col-8">
                                         <h5 class="text-center">Crea un marcador recibiendo los datos desde una API</h5>
-                                    </div>  
+                                    </div>
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="row mt-3">
@@ -118,8 +119,9 @@
                             <div class="carousel-item">
                                 <div class="row justify-content-center">
                                     <div class="col-8">
-                                        <h5 class="text-center">Crea un marcador con la ubicación predeterminada <br> UTN-FRC (CBA)</h5>
-                                    </div>  
+                                        <h5 class="text-center">Crea un marcador con la ubicación predeterminada <br>
+                                            UTN-FRC (CBA)</h5>
+                                    </div>
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="row my-4">
@@ -134,8 +136,9 @@
                             <div class="carousel-item">
                                 <div class="row justify-content-center">
                                     <div class="col-8">
-                                        <h5 class="text-center">Crea un marcador personalizado <br> con los datos ingresados</h5>
-                                    </div>  
+                                        <h5 class="text-center">Crea un marcador personalizado <br> con los datos
+                                            ingresados</h5>
+                                    </div>
                                 </div>
                                 <div class="row my-4 justify-content-center">
                                     <div class="col-auto">
@@ -232,8 +235,13 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-
             var fuenteIcono = "https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-location-256.png";
+            
+            $(document).ready(function () {
+                mostrarMapa(-31.406275,-64.185474,"abc.png");
+            });
+
+            
 
             $("#btnCargar").click(function () {
                 $.ajax({
@@ -379,7 +387,10 @@
                 map.setCenter(LocationOfMarker)
 
                 //Zooming so that the marker can be clearly visible
-                map.setZoom(8)
+                if(latt == -31.406275 && longg == -64.185474)
+                    map.setZoom(3);
+                else
+                    map.setZoom(8)
             }
         </script>
 </body>
